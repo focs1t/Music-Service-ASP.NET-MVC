@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CourseWork.Data;
 using CourseWork.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace CourseWork.Controllers
 {
@@ -65,14 +66,122 @@ namespace CourseWork.Controllers
         //    //return View();
         //}
 
-        //// GET: TracksPlaylists/Create
-        //public async Task<IActionResult> Create(int trackId)
+        // GET: TracksPlaylists/Create
+        public async Task<IActionResult> Create(int id)
+        {
+            //var tracks = _context.Tracks.Include(t => t.artists).ToList();
+            //var tracksPlaylists = tracks.Select(tracks => new SelectListItem
+            //{
+            //    Value = tracks.id.ToString(),
+            //    Text = $"{tracks.name} - {tracks.artists.name}"
+            //});
+            //ViewData["tracksId"] = new SelectList(tracksPlaylists, "Value", "Text");
+            var currentId = id;
+            var tracks = _context.Tracks.Where(t => t.id == id).ToList();
+            var tracksPlaylist = tracks.Select(track => new SelectListItem
+            {
+                Value = track.id.ToString(),
+                Text = track.name
+            }).ToList();
+            ViewData["tracksId"] = new SelectList(tracksPlaylist, "Value", "Text");
+            // Получение текущего пользователя
+            var currentUser = User.Identity.Name;
+
+            // Поиск всех плейлистов, принадлежащих текущему пользователю
+            var playlists = _context.Playlists.Where(p => p.username == currentUser).ToList();
+
+            // Создание списка SelectListItem для найденных плейлистов
+            var playlistsTracks = playlists.Select(playlist => new SelectListItem
+            {
+                Value = playlist.id.ToString(),
+                Text = $"{playlist.name} - {playlist.username}"
+            }).ToList();
+
+            // Добавление списка в ViewData
+            ViewData["playlistsId"] = new SelectList(playlistsTracks, "Value", "Text");
+
+            return View();
+            //var track = await _context.Tracks.FindAsync(id);
+            //if (track != null)
+            //{
+            //    ViewData["tracksId"] = new SelectList(new[] { track }.ToList(), "id", "name");
+            //}
+
+            //var playlists = _context.Playlists.ToList();
+            //var playlistsTracks = playlists.Select(playlists => new SelectListItem
+            //{
+            //    Value = playlists.id.ToString(),
+            //    //username = playlists.username,
+            //    Text = $"{playlists.name} - {playlists.username}"
+            //});//.Where(p => p.username == User.Identity.Name)
+            //   //.ToListAsync();
+            //ViewData["playlistsId"] = new SelectList(playlistsTracks, "Value", "Text");
+            //return View();
+            //ViewData["playlistsId"] = new SelectList(_context.Playlists, "id", "name");
+            //ViewData["tracksId"] = new SelectList(_context.Tracks, "id", "name");
+            //return View();
+        }
+
+        // POST: TracksPlaylists/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,tracksId,playlistsId")] TracksPlaylists tracksPlaylists)
+        {
+            //var tracks = await _context.Tracks.FindAsync(id);
+
+            //if (tracks == null)
+            //{
+            //    ModelState.AddModelError("", "Invalid track selection.");
+            //}
+
+            if (ModelState.IsValid)
+            {
+                //tracksPlaylists.tracksId = id; // Assuming you meant to set tracksId here, not tracks.id
+                _context.Add(tracksPlaylists);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["playlistsId"] = new SelectList(_context.Playlists, "id", "name", tracksPlaylists.playlistsId);
+            ViewData["tracksId"] = new SelectList(_context.Tracks, "id", "name", tracksPlaylists.tracksId);
+
+            return View(tracksPlaylists);
+            ////var tracks = _context.Tracks.Find(tracksPlaylists.tracksId);
+            //if (ModelState.IsValid)
+            //{
+            //    tracksPlaylists.tracks.id = id;
+            //    _context.Add(tracksPlaylists);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            ////if (tracks != null)
+            ////{
+            ////    List<Tracks> tracks1 = new List<Tracks>();
+            ////    tracks1.Add(tracks);
+            ////    ViewData["tracksId"] = new SelectList(tracks1, "id", "name");
+            ////}
+            ////var playlists = await _context.Playlists
+            ////    .Where(p => p.username == User.Identity.Name)
+            ////    .ToListAsync();
+            ////ViewData["playlistsId"] = new SelectList(playlists, "id", "name");
+            //ViewData["playlistsId"] = new SelectList(_context.Playlists, "id", "name", tracksPlaylists.playlistsId);
+            //ViewData["tracksId"] = new SelectList(_context.Tracks, "id", "name", tracksPlaylists.tracksId);
+            ////ViewData["tracksId"] = new SelectList(tracks1, "id", "name");
+            //return View(tracksPlaylists);
+        }
+
+        // GET: TracksPlaylists/Create
+        //public IActionResult Create()
         //{
-        //    var track = await _context.Tracks.FindAsync(trackId);
-        //    if (track != null)
+        //    var tracks = _context.Tracks.Include(t => t.artists).ToList();
+        //    var tracksPlaylists = tracks.Select(tracks => new SelectListItem
         //    {
-        //        ViewData["tracksId"] = new SelectList(new[] { track }.ToList(), "id", "name");
-        //    }
+        //        Value = tracks.id.ToString(),
+        //        Text = $"{tracks.name} - {tracks.artists.name}"
+        //    });
+        //    ViewData["tracksId"] = new SelectList(tracksPlaylists, "Value", "Text");
 
         //    var playlists = _context.Playlists.ToList();
         //    var playlistsTracks = playlists.Select(playlists => new SelectListItem
@@ -94,78 +203,22 @@ namespace CourseWork.Controllers
         //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,playlistsId")] TracksPlaylists tracksPlaylists, int tracksId)
+        //public async Task<IActionResult> Create([Bind("Id,tracksId,playlistsId")] TracksPlaylists tracksPlaylists)
         //{
-        //    var tracks = _context.Tracks.Find(tracksId);
         //    if (ModelState.IsValid)
         //    {
         //        _context.Add(tracksPlaylists);
         //        await _context.SaveChangesAsync();
         //        return RedirectToAction(nameof(Index));
         //    }
-        //    if(tracks != null)
-        //    {
-        //        List<Tracks> tracks1 = new List<Tracks>();
-        //        tracks1.Add(tracks);
-        //        ViewData["tracksId"] = new SelectList(tracks1, "id", "name");
-        //    }
-        //    //var playlists = await _context.Playlists
-        //    //    .Where(p => p.username == User.Identity.Name)
-        //    //    .ToListAsync();
-        //    //ViewData["playlistsId"] = new SelectList(playlists, "id", "name");
+        //    /*var playlists = await _context.Playlists
+        //        .Where(p => p.username == User.Identity.Name)
+        //        .ToListAsync();
+        //    ViewData["playlistsId"] = new SelectList(playlists, "id", "name");*/
         //    ViewData["playlistsId"] = new SelectList(_context.Playlists, "id", "name", tracksPlaylists.playlistsId);
-        //    //ViewData["tracksId"] = new SelectList(_context.Tracks, "id", "name", tracksPlaylists.tracksId);
-        //    //ViewData["tracksId"] = new SelectList(tracks1, "id", "name");
+        //    ViewData["tracksId"] = new SelectList(_context.Tracks, "id", "name", tracksPlaylists.tracksId);
         //    return View(tracksPlaylists);
         //}
-
-        // GET: TracksPlaylists/Create
-        public IActionResult Create()
-        {
-            var tracks = _context.Tracks.Include(t => t.artists).ToList();
-            var tracksPlaylists = tracks.Select(tracks => new SelectListItem
-            {
-                Value = tracks.id.ToString(),
-                Text = $"{tracks.name} - {tracks.artists.name}"
-            });
-            ViewData["tracksId"] = new SelectList(tracksPlaylists, "Value", "Text");
-
-            var playlists = _context.Playlists.ToList();
-            var playlistsTracks = playlists.Select(playlists => new SelectListItem
-            {
-                Value = playlists.id.ToString(),
-                //username = playlists.username,
-                Text = $"{playlists.name} - {playlists.username}"
-            });//.Where(p => p.username == User.Identity.Name)
-               //.ToListAsync();
-            ViewData["playlistsId"] = new SelectList(playlistsTracks, "Value", "Text");
-            return View();
-            //ViewData["playlistsId"] = new SelectList(_context.Playlists, "id", "name");
-            //ViewData["tracksId"] = new SelectList(_context.Tracks, "id", "name");
-            //return View();
-        }
-
-        // POST: TracksPlaylists/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,tracksId,playlistsId")] TracksPlaylists tracksPlaylists)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(tracksPlaylists);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            /*var playlists = await _context.Playlists
-                .Where(p => p.username == User.Identity.Name)
-                .ToListAsync();
-            ViewData["playlistsId"] = new SelectList(playlists, "id", "name");*/
-            ViewData["playlistsId"] = new SelectList(_context.Playlists, "id", "name", tracksPlaylists.playlistsId);
-            ViewData["tracksId"] = new SelectList(_context.Tracks, "id", "name", tracksPlaylists.tracksId);
-            return View(tracksPlaylists);
-        }
 
         // GET: TracksPlaylists/Edit/5
         public async Task<IActionResult> Edit(int? id)

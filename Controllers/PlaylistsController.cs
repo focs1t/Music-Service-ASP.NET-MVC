@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Identity;
 using CourseWork.Areas.Identity.Data;
 using System.IO.Compression;
+using OfficeOpenXml;
 
 namespace CourseWork.Controllers
 {
@@ -216,7 +217,7 @@ namespace CourseWork.Controllers
         }
 
 
-
+        [Authorize(Roles = "admin")]
         // GET: Playlists
         public async Task<IActionResult> Index()
         {
@@ -224,7 +225,7 @@ namespace CourseWork.Controllers
                           View(await _context.Playlists.ToListAsync()) :
                           Problem("Entity set 'DataContext.Playlists'  is null.");
         }
-
+        [Authorize(Roles = "admin")]
         // GET: Playlists/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -262,10 +263,10 @@ namespace CourseWork.Controllers
                 .ToListAsync();
 
             // Фильтруем треки по пользователю, если необходимо
-            if (User.Identity.Name != playlist.username)
-            {
-                tracks = tracks.Where(tp => tp.playlists.username == User.Identity.Name).ToList();
-            }
+            //if (User.Identity.Name != playlist.username)
+            //{
+            //    tracks = tracks.Where(tp => tp.playlists.username == User.Identity.Name).ToList();
+            //}
 
             ViewBag.Tracks = tracks;
 

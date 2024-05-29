@@ -48,7 +48,8 @@
                         {
                             <a asp-action="DownloadTrack" asp-route-id="@item.id" class="btn btn-primary">Скачать трек</a>
                             <a asp-action="Details" asp-route-id="@item.id" class="btn btn-secondary">Подробнее</a>
-                            <a asp-area="" asp-controller="TracksPlaylists" asp-action="Create" class="btn btn-success">+</a>
+@*                             <a asp-area="" asp-controller="TracksPlaylists" asp-action="Create"  class="btn btn-success">+</a> *@
+                            <a href="/TracksPlaylists/Create?id=@item.id" class="btn btn-success">+</a>
                         }
                         @if (User.IsInRole("admin"))
                         {

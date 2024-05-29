@@ -9,6 +9,7 @@ using CourseWork.Data;
 using CourseWork.Models;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
+using OfficeOpenXml;
 
 namespace CourseWork.Controllers
 {
@@ -217,6 +218,62 @@ namespace CourseWork.Controllers
         private bool AlbumsExists(int id)
         {
           return (_context.Albums?.Any(e => e.id == id)).GetValueOrDefault();
+        }
+
+        public async Task<IActionResult> GetReport(int? id)
+        {
+            if (id == null || _context.Albums == null)
+            {
+                return NotFound();
+            }
+
+            var album = await _context.Albums
+                .Include(a => a.artists)
+                .Include(a => a.genres)
+                .FirstOrDefaultAsync(m => m.id == id);
+
+            if (album == null)
+            {
+                return NotFound();
+            }
+
+            var tracks = await _context.Tracks
+                .Where(t => t.albumsId == id)
+                .ToListAsync();
+
+            // Создаем файл Excel
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Установка лицензии (нужно для EPPlus)
+            using (var package = new ExcelPackage())
+            {
+                // Добавляем лист в файл Excel
+                var worksheet = package.Workbook.Worksheets.Add("Треки");
+
+                // Добавляем название альбома и исполнителя
+                worksheet.Cells["A1"].Value = "Название альбома:";
+                worksheet.Cells["B1"].Value = album.name;
+                worksheet.Cells["A2"].Value = "Исполнитель:";
+                worksheet.Cells["B2"].Value = album.artists.name;
+
+                // Добавляем заголовки столбцов
+                worksheet.Cells["A4"].Value = "Название трека";
+
+                // Заполняем таблицу данными о треках
+                int row = 5; // Начинаем с 5 строки, чтобы освободить место для заголовков
+                foreach (var track in tracks)
+                {
+                    worksheet.Cells[row, 1].Value = track.name;
+                    row++;
+                }
+
+                // Сохраняем файл на сервере
+                var fileName = $"{album.name}_Tracks.xlsx";
+                var filePath = Path.Combine(_appEnvironment.WebRootPath, "reports", "albums", fileName);
+                FileInfo file = new FileInfo(filePath);
+                package.SaveAs(file);
+
+                // Возвращаем файл как результат действия
+                return PhysicalFile(filePath, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+            }
         }
     }
 }

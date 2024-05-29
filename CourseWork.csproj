@@ -34,6 +34,8 @@
     <Folder Include="wwwroot\files\songs\playlists\" />
     <Folder Include="wwwroot\NewFolder\" />
     <Folder Include="wwwroot\reports\concerts\" />
+    <Folder Include="wwwroot\reports\albums\" />
+    <Folder Include="wwwroot\reports\playlists\" />
     <Folder Include="wwwroot\temp\" />
   </ItemGroup>
 

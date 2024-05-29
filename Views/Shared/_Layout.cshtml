@@ -36,12 +36,12 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Genres" asp-action="Index">Жанры</a>
                             </li>
-                        }
-                        @if (User.IsInRole("user") || User.IsInRole("admin"))
-                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Playlists" asp-action="Index">Плейлисты</a>
                             </li>
+                        }
+                        @if (User.IsInRole("user") || User.IsInRole("admin"))
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Tracks" asp-action="Index">Треки</a>
                             </li>

@@ -12,7 +12,7 @@
     <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="tracksId" class="control-label">Выберите трек:</label>
                 <select asp-for="tracksId" class="form-control" asp-items="ViewBag.tracksId"></select>
             </div>

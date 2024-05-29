@@ -41,6 +41,32 @@
     @if (User.IsInRole("admin"))
     {
         <a asp-action="Edit" asp-route-id="@Model?.id" class="btn btn-primary">Изменить</a>
+        <form asp-action="GetReport" asp-route-id="@Model?.id">
+            <button type="submit" class="btn btn-success">Создать отчет</button>
+        </form>
     }
     <a asp-action="Index" class="btn btn-secondary">Вернуться к списку</a>
+</div>
+
+<hr />
+
+<div>
+    <h4>Треки</h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Исполнитель</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var track in ViewBag.Tracks)
+            {
+                <tr>
+                    <td>@track.name</td>
+                    <td>@track.artists.name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

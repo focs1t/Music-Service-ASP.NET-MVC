@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Remove Track From Playlist";
+}
+
+<h1>Remove Track From Playlist</h1>
+
+<form asp-action="RemoveTrackFromPlaylist" method="post">
+    <input type="hidden" name="trackId" value="@ViewBag.TrackId" />
+    <p>Are you sure you want to remove this track from the playlist?</p>
+    <button type="submit" class="btn btn-danger">Confirm</button>
+    <a asp-action="Index" class="btn btn-primary">Cancel</a>
+</form>
