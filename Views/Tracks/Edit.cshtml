@@ -1,0 +1,66 @@
+﻿@model CourseWork.Models.Tracks
+
+@{
+    ViewData["Title"] = "Редактирование";
+}
+
+<h1>Редактирование</h1>
+
+<h4>Треки</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id" />
+
+            <div class="form-group">
+                <label asp-for="name" class="control-label">Название</label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="date" class="control-label">Дата публикации</label>
+                <input asp-for="date" class="form-control" readonly />
+                <span asp-validation-for="date" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="genresId" class="control-label">Жанр</label>
+                <select asp-for="genresId" class="form-control" asp-items="ViewBag.genresId"></select>
+                <span asp-validation-for="genresId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="albumsId" class="control-label">Альбом</label>
+                <select asp-for="albumsId" class="form-control" asp-items="ViewBag.albumsId"></select>
+                <span asp-validation-for="albumsId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="artistsId" class="control-label">Исполнитель</label>
+                <select asp-for="artistsId" class="form-control" asp-items="ViewBag.artistsId"></select>
+                <span asp-validation-for="artistsId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Загрузить файл</label>
+                <div class="mt-2">
+                    <input type="file" name="upload" class="form-control-file" />
+                </div>
+            </div>
+
+            <div class="form-group d-flex justify-content-start">
+                <button type="submit" class="btn btn-primary mr-2">Сохранить</button>
+                <a asp-action="Index" class="btn btn-secondary ml-2">Вернуться к списку</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

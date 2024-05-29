@@ -1,0 +1,37 @@
+﻿@model CourseWork.Models.Genres
+
+@{
+    ViewData["Title"] = "Редактирование";
+}
+
+<h1>Редактирование</h1>
+
+<h4>Жанры</h4>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="id" />
+
+                <div class="form-group">
+                    <label asp-for="name" class="control-label mb-2">Название жанра</label>
+                    <input asp-for="name" class="form-control mb-3" />
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group d-flex justify-content-start">
+                    <button type="submit" class="btn btn-primary mr-2">Сохранить</button>
+                    <a asp-action="Index" class="btn btn-secondary ml-2">Вернуться к списку</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

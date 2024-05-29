@@ -1,0 +1,47 @@
+﻿@model CourseWork.Models.Playlists
+
+@{
+    ViewData["Title"] = "Добавление";
+}
+
+<h1>Добавление</h1>
+
+<h4>Плейлисты</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="username" class="control-label">Пользователь</label>
+                <input asp-for="username" class="form-control" value="@User.Identity.Name" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label">Название плейлиста</label>
+                <input asp-for="name" class="form-control" />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="description" class="control-label">Описание</label>
+                <textarea asp-for="description" class="form-control"></textarea>
+                <span asp-validation-for="description" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Добавить" class="btn btn-primary" />
+                @if (User.IsInRole("user"))
+                {
+                    <a asp-action="UserPlaylists" class="btn btn-secondary">Вернуться к списку</a>
+
+                }
+                @if (User.IsInRole("admin"))
+                {
+                    <a asp-action="Index" class="btn btn-secondary">Вернуться к списку</a>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

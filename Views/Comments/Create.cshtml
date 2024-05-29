@@ -1,0 +1,34 @@
+﻿@model CourseWork.Models.Comments
+
+@{
+    ViewData["Title"] = "Добавление";
+}
+
+<h1>Добавление</h1>
+
+<h4>Комментарии</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="description" class="control-label">Содержание</label>
+                <textarea asp-for="description" class="form-control"></textarea>
+                <span asp-validation-for="description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="albumsId" class="control-label">Альбом</label>
+                <select asp-for="albumsId" class ="form-control" asp-items="ViewBag.albumsId"></select>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

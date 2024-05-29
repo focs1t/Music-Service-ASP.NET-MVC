@@ -1,0 +1,27 @@
+﻿@model Playlists
+
+<h1>Удаление</h1>
+
+<div class="container">
+    <h3>Вы уверены, что хотите удалить этот плейлист?</h3>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Плейлист номер @Model?.id</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">Название плейлиста</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.name)</dd>
+                <dt class="col-sm-2">Описание</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.description)</dd>
+                <dt class="col-sm-2">Дата публикации</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.date)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="DeleteUserPlaylist" class="mt-3">
+        <input type="hidden" asp-for="id" />
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a asp-action="UserPlaylists" class="btn btn-secondary">Вернуться к списку</a>
+    </form>
+</div>

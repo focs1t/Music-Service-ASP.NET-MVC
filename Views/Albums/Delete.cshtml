@@ -1,0 +1,37 @@
+﻿@model CourseWork.Models.Albums
+
+@{
+    ViewData["Title"] = "Удаление";
+}
+
+<h1>Удаление</h1>
+
+<div class="container">
+    <h3>Вы уверены, что хотите удалить этот альбом?</h3>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Альбом номер @Model?.id</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">Название альбома</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.name)</dd>
+                <dt class="col-sm-2">Описание</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.description)</dd>
+                <dt class="col-sm-2">Дата публикации</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.date)</dd>
+                <dt class="col-sm-2">Путь фото</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.Photo)</dd>
+                <dt class="col-sm-2">Жанр</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.genres.name)</dd>
+                <dt class="col-sm-2">Исполнитель</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.artists.name)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" class="mt-3">
+        <input type="hidden" asp-for="id" />
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a asp-action="Index" class="btn btn-secondary">Вернуться к списку</a>
+    </form>
+</div>

@@ -1,0 +1,56 @@
+﻿ChatGPT
+Вот обновленный код с использованием Bootstrap:
+
+html
+Копировать код
+@model CourseWork.Models.Playlists
+
+@{
+    ViewData["Title"] = "Подробности";
+}
+
+<h1>Подробности</h1>
+
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Плейлист номер @Model?.id</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">Название плейлиста</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.name)</dd>
+                <dt class="col-sm-2">Описание</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.description)</dd>
+                <dt class="col-sm-2">Дата публикации</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.date)</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3">
+    <a asp-action="Index" class="btn btn-secondary">Вернуться к списку</a>
+</div>
+
+<hr />
+
+<div>
+    <h4>Треки</h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Исполнитель</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var track in ViewBag.Tracks)
+            {
+                <tr>
+                    <td>@track.tracks.name</td>
+                    <td>@track.tracks.artists.name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

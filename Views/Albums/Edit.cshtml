@@ -1,0 +1,85 @@
+﻿@model CourseWork.Models.Albums
+
+@{
+    ViewData["Title"] = "Редактирование";
+}
+
+<style>
+    .form-container {
+        height: 100%;
+    }
+
+    .photo-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<h1>Редактирование</h1>
+
+<h4>Альбомы</h4>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="id" />
+
+                <div class="form-group">
+                    <label asp-for="name" class="control-label">Название альбома</label>
+                    <input asp-for="name" class="form-control" />
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="description" class="control-label">Описание</label>
+                    <textarea asp-for="description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="date" class="control-label">Дата публикации</label>
+                    <input asp-for="date" class="form-control" />
+                    <span asp-validation-for="date" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="genresId" class="control-label">Жанр</label>
+                    <select asp-for="genresId" class="form-control" asp-items="ViewBag.genresId"></select>
+                    <span asp-validation-for="genresId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="artistsId" class="control-label">Исполнитель</label>
+                    <select asp-for="artistsId" class="form-control" asp-items="ViewBag.artistsId"></select>
+                    <span asp-validation-for="artistsId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="mt-4">
+                        <input type="file" name="upload" class="form-control" /><br>
+                    </div>
+                </div>
+
+                <div class="form-group d-flex justify-content-start">
+                    <button type="submit" class="btn btn-primary mr-2">Сохранить</button>
+                    <a asp-action="Index" class="btn btn-secondary ml-2">Вернуться к списку</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 photo-container">
+            @if (ViewBag.Photodata != null)
+            {
+                <img class="img-fluid" height="500" src="data:image/jpeg;base64,@(Convert.ToBase64String(ViewBag.Photodata))" alt="Тур фото">
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

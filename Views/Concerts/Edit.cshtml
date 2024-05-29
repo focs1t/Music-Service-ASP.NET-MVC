@@ -1,0 +1,52 @@
+﻿@model CourseWork.Models.Concerts
+
+@{
+    ViewData["Title"] = "Редактирование";
+}
+
+<h1>Редактирование</h1>
+
+<h4>Концерты</h4>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="id" />
+
+                <div class="form-group">
+                    <label asp-for="name" class="control-label">Название места</label>
+                    <input asp-for="name" class="form-control" />
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="city" class="control-label">Город</label>
+                    <input asp-for="city" class="form-control" />
+                    <span asp-validation-for="city" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="date" class="control-label">Дата проведения</label>
+                    <input asp-for="date" class="form-control" />
+                    <span asp-validation-for="date" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="toursId" class="control-label mb-2">Тур</label>
+                    <select asp-for="toursId" class="form-control mb-3" asp-items="ViewBag.toursId"></select>
+                    <span asp-validation-for="toursId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group d-flex justify-content-start">
+                    <button type="submit" class="btn btn-primary mr-2">Сохранить</button>
+                    <a asp-action="Index" class="btn btn-secondary ml-2">Вернуться к списку</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

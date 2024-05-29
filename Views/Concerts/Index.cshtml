@@ -1,0 +1,51 @@
+﻿@model IEnumerable<CourseWork.Models.Concerts>
+
+@{
+    ViewData["Title"] = "Концерты";
+}
+
+<h1>Концерты</h1>
+
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">Добавить</a>
+        <a asp-action="GetReport" class="btn btn-secondary">Создать отчет</a>
+    </p>
+}
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Название места</th>
+                <th>Город</th>
+                <th>Дата проведения</th>
+                <th>Тур</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.city)</td>
+                    <td>@Html.DisplayFor(modelItem => item.date)</td>
+                    <td>@Html.DisplayFor(modelItem => item.tours.name)</td>
+                    <td>
+                        @if (User.IsInRole("user"))
+                        {
+                            <a asp-action="Details" asp-route-id="@item.id" class="btn btn-secondary">Подробности</a>
+                        }
+                        @if (User.IsInRole("admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.id" class="btn btn-primary">Изменить</a>
+                            <a asp-action="Details" asp-route-id="@item.id" class="btn btn-secondary">Подробности</a>
+                            <a asp-action="Delete" asp-route-id="@item.id" class="btn btn-danger">Удалить</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

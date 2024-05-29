@@ -1,0 +1,39 @@
+﻿@model CourseWork.Models.TracksPlaylists
+
+@{
+    ViewData["Title"] = "Редактировать";
+}
+
+<h1>Редактировать</h1>
+
+<h4>Треки и Плейлисты</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="tracksId" class="control-label">Трек</label>
+                <select asp-for="tracksId" class="form-control" asp-items="ViewBag.tracksId" disabled></select>
+                <span asp-validation-for="tracksId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="playlistsId" class="control-label mb-2">Плейлист</label>
+                <select asp-for="playlistsId" class="form-control mb-3" asp-items="ViewBag.playlistsId"></select>
+                <span asp-validation-for="playlistsId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group d-flex justify-content-start">
+                <button type="submit" class="btn btn-primary mr-2">Сохранить</button>
+                <a asp-action="Index" class="btn btn-secondary ml-2">Вернуться к списку</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

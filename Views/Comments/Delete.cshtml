@@ -1,0 +1,33 @@
+﻿@model CourseWork.Models.Comments
+
+@{
+    ViewData["Title"] = "Удаление";
+}
+
+<h1>Удаление</h1>
+
+<div class="container">
+    <h3>Вы уверены, что хотите удалить эту запись?</h3>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Комментарий номер @Model?.id</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">Пользователь</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.username)</dd>
+                <dt class="col-sm-2">Содержание</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.description)</dd>
+                <dt class="col-sm-2">Дата публикации</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.date)</dd>
+                <dt class="col-sm-2">Альбом</dt>
+                <dd class="col-sm-10">@Html.DisplayFor(model => model.albums.name)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" class="mt-3">
+        <input type="hidden" asp-for="id" />
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a asp-action="Index" class="btn btn-secondary">Вернуться к списку</a>
+    </form>
+</div>

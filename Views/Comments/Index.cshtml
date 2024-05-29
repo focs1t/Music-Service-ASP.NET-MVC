@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CourseWork.Models.Comments>
+
+@{
+    ViewData["Title"] = "Комментарии";
+}
+
+<h1>Комментарии</h1>
+
+@if (User.IsInRole("user"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">Добавить</a>
+    </p>
+}
+<div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Содержание</th>
+                <th>Дата публикации</th>
+                <th>Альбом</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.username)</td>
+                    <td>@Html.DisplayFor(modelItem => item.description)</td>
+                    <td>@Html.DisplayFor(modelItem => item.date)</td>
+                    <td>@Html.DisplayFor(modelItem => item.albums.name)</td>
+                    <td>
+                        @if (User.IsInRole("user"))
+                        {
+                            <a asp-action="Details" asp-route-id="@item.id" class="btn btn-secondary">Подробности</a>
+                        }
+                        @if (User.IsInRole("moderator"))
+                        {
+                            <a asp-action="Details" asp-route-id="@item.id" class="btn btn-secondary">Подробности</a>
+                            <a asp-action="Delete" asp-route-id="@item.id" class="btn btn-danger">Удалить</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
