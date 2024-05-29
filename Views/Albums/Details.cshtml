@@ -70,3 +70,31 @@
         </tbody>
     </table>
 </div>
+<div>
+    <a href="/Comments/Create?id=@Model?.id" class="btn btn-success">Оставить комментарий</a>
+</div>
+
+<hr />
+
+<div>
+    <h4>Комментарии</h4>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Автор</th>
+                <th>Комментарий</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var comment in ViewBag.Comments)
+            {
+                <tr>
+                    <td>@comment.username</td>
+                    <td>@comment.description</td>
+                    <td>@comment.date</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

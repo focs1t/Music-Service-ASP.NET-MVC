@@ -55,8 +55,13 @@ namespace CourseWork.Controllers
                 .Where(t => t.albumsId == id)
                 .ToListAsync();
 
-            // Возвращаем модель с информацией об альбоме и его треках
-            ViewBag.Tracks = tracks; // Можно также передать треки в модель представления через ViewBag или ViewModel
+            // Получаем все комментарии для данного альбома
+            var comments = await _context.Comments
+                .Where(c => c.albumsId == id)
+                .ToListAsync();
+
+            ViewBag.Tracks = tracks;
+            ViewBag.Comments = comments;
 
             return View(albums);
         }

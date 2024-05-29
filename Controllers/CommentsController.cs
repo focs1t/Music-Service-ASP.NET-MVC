@@ -52,8 +52,15 @@ namespace CourseWork.Controllers
         }
 
         // GET: Comments/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
+            var currentId = id;
+            var comments = _context.Comments.Where(c => c.id == id).ToList();
+            var album = comments.Select(comment => new SelectListItem
+            {
+                Value = comment.id.ToString()
+            }).ToList();
+            ViewData["albumsId"] = new SelectList(album, "Value", "Value");
             ViewData["albumsId"] = new SelectList(_context.Albums, "id", "name");
             return View();
         }
